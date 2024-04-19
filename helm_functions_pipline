@@ -22,6 +22,19 @@ To look at the specific tier line add a grep to the command:
 
 helm template /root/webapp --set serviceAccount.labels.tier=customlabel | grep tier
 
+=================================
+helm template /root/webapp --set serviceAccount.labels.tier=customlabel
+This overrides the default label set in the values.yaml file with a custom label you pass in from the command line. Then look for the generated serviceaccount.yaml file.
+
+To look at the specific tier line add a grep to the command:
+
+helm template /root/webapp --set serviceAccount.labels.tier=customlabel | grep tier
+
+
+-----------------------------
+conver first letter to upper case
+In the serviceaccount.yaml edit the label as: app: {{ .Values.serviceAccount.labels.app | camelcase }}
+
 
 
 
