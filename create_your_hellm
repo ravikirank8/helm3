@@ -120,4 +120,6 @@ Now change the service type in the service.yaml so as to fetch value from the va
 the service type field should be updated as follows:
 type: {{ .Values.service.type }}
 
+Run the command: helm install webapp ./webapp-nginx to install the chart and to ensure that the deployment resource created by using the command : kubectl get deploy.
+
   
