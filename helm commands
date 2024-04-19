@@ -1,0 +1,26 @@
+ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+
+
+helm search hub consul | grep hashicorp
+helm search hub wordpress
+
+controlplane ~ ➜  helm repo list
+NAME            URL                                                 
+bitnami         https://charts.bitnami.com/bitnami                  
+puppet          https://puppetlabs.github.io/puppetserver-helm-chart
+hashicorp       https://helm.releases.hashicorp.com  
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm search repo wordpress
+helm install amaze-surf bitnami/apache
+
+
+Deploy the Apache application on the cluster using the apache from the bitnami repository.
+Set the release Name to: amaze-surf
+ helm install amaze-surf bitnami/apache
+
+helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS     CHART           APP VERSION
+amaze-surf      default         1               2024-04-19 03:15:01.746404075 -0400 EDT deployed   apache-11.0.2   2.4.59  
