@@ -1,0 +1,123 @@
+cat deployment.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: "nginx:1.16.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+
+=========
+
+cat service.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      nodePort: 30080
+      name: http
+  selector:
+    app: nginx
+
+
+Create a helm chart at /root/webapp-nginx for this application by converting the deployment and service definition files into templates.
+
+
+Create a chart first and then move the definition files into the templates directory.
+
+  The deployment and service objects should be named in the format RELEASE-NAME-nginx.
+
+Set apiVersion for the chart to v2.
+
+Name the chart webapp-nginx.
+
+Set version number to 0.1.1.
+
+Set appVersion to 1.16.0.
+
+Values file has a variable image set by default so make changes for an image nginx:1.16.0.
+
+Value of image variable to be used in deployment as the image name for the container.
+
+Note: - Remove the unused YAML and text files from the templates directory.
+
+
+
+        Run the following command to create a chart structure :
+
+helm create /root/webapp-nginx
+
+
+and after running that command, make changes according to the question.
+
+        The Chart.yaml should be look like as follows:
+apiVersion: v2
+name: webapp-nginx
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.1
+appVersion: "1.16.0"
+
+
+Update the field's value according to the question and remove the other unused fields in values.yaml.
+
+The values.yaml file should be look like as follows:
+replicaCount: 1
+image:
+  repository: nginx
+  tag: 1.16.0
+
+service:
+  type: ClusterIP
+  port: 80
+
+
+  Copy the deployment and service definition files from "/root/webapp" directory to "/root/webapp-nginx/templates" directory.
+
+cp -vr /root/webapp/* /root/webapp-nginx/templates/
+and remove other YAML and text files which are not in use.
+
+The deployment name can be modifThe container section in the deployment.yaml can be modified as:
+
+   containers:
+      - name: {{ .Values.image.repository }}
+        image: {{ .Values.image.repositoryied in deployment.yaml file as:
+name: {{ .Release.Name }}-nginx
+
+The service name in the service.yaml should be modified as:
+  name: {{ .Release.Name }}-nginx
+========
+
+Fix the nodePort in the service.yaml file.
+
+helm template ./webapp-nginx/
+By using the helm template command, we see that the value is empty for the nodePort field under the service.spec.ports that we have to fix.
+
+service.yaml
+nodePort: {{ .Values.service.nodePort }}
+==
+Now change the service type in the service.yaml so as to fetch value from the values.yaml
+the service type field should be updated as follows:
+type: {{ .Values.service.type }}
+
+  
