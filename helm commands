@@ -13,6 +13,7 @@ puppet          https://puppetlabs.github.io/puppetserver-helm-chart
 hashicorp       https://helm.releases.hashicorp.com  
 
 helm repo add bitnami https://charts.bitnami.com/bitnami
+ helm repo remove hashicorp
 helm search repo wordpress
 helm install amaze-surf bitnami/apache
 
@@ -23,4 +24,15 @@ Set the release Name to: amaze-surf
 
 helm list
 NAME            NAMESPACE       REVISION        UPDATED                                 STATUS     CHART           APP VERSION
-amaze-surf      default         1               2024-04-19 03:15:01.746404075 -0400 EDT deployed   apache-11.0.2   2.4.59  
+amaze-surf      default         1               2024-04-19 03:15:01.746404075 -0400 EDT deployed   apache-11.0.2   2.4.59
+
+
+helm list | grep nginx
+crazy-web       default         1               2024-04-19 03:18:22.623893192 -0400 EDT deployed   nginx-16.0.4    1.25.5     
+happy-browse    default         1               2024-04-19 03:18:18.246473854 -0400 EDT deployed   nginx-16.0.4    1.25.5     
+
+controlplane ~ ➜  helm uninstall happy-browse
+release "happy-browse" uninstalled
+
+controlplane ~ ➜  helm list | grep nginx
+crazy-web       default         1               2024-04-19 03:18:22.623893192 -0400 EDT deployed   nginx-16.0.4    1.25.5    
