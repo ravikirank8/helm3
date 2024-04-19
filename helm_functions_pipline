@@ -1,0 +1,35 @@
+{{ .Values.wordpressPassword | b64enc | quote }}
+
+here quote is " "
+b64enc is encoder
+
+Run the command: echo -n PassW0rd | base64 to generate the base64 encoded string and -n flag removes the trailing newlines.
+
+In our example, b64enc will encode the values with base64 and quote will wrap the encoded string in double-quotes.
+
+  ==============
+
+   image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+
+
+
+  ===========
+
+  helm template /root/webapp --set serviceAccount.labels.tier=customlabel
+This overrides the default label set in the values.yaml file with a custom label you pass in from the command line. Then look for the generated serviceaccount.yaml file.
+
+To look at the specific tier line add a grep to the command:
+
+helm template /root/webapp --set serviceAccount.labels.tier=customlabel | grep tier
+
+
+
+
+
+
+
+
+
+
+
+
