@@ -1,0 +1,3 @@
+mkdir /root/package
+cd /root/package/
+helm package /root/webapp-color
