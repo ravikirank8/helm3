@@ -4,7 +4,6 @@ In the serviceaccount.yaml edit the label as: app: {{ .Values.serviceAccount.lab
 
 conditions and blocks
 
-
 Now update the service.yaml file in such a way that if the service type is NodePort, then it should fetch the nodePort value from the values.yaml file.
 The service.yaml file is located under the /root/webapp-color/templates directory.
 
