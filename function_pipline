@@ -1,3 +1,65 @@
 se the appropriate function to convert the label app in the serviceaccount.yaml file from web_application to WebApplication
 
 In the serviceaccount.yaml edit the label as: app: {{ .Values.serviceAccount.labels.app | camelcase }}
+
+conditions and blocks
+
+
+Now update the service.yaml file in such a way that if the service type is NodePort, then it should fetch the nodePort value from the values.yaml file.
+The service.yaml file is located under the /root/webapp-color/templates directory.
+
+cat service.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: webapp-color
+  type: {{ .Values.service.type }}
+status:
+  loadBalancer: {}
+
+
+Finally 
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    {{- if eq .Values.service.type "NodePort" }}
+    nodePort: {{ .Values.service.nodePort }}
+    {{- end }}
+  selector:
+    name: webapp-color
+  type: {{ .Values.service.type }}
+status:
+  loadBalancer: {}
+
+
+
+============
+
+apiVersion: v1
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: default
+kind: ConfigMap
+data:
+  {{- if eq .Values.environment "production" }}
+    APP_COLOR: pink
+  {{- else if eq .Values.environment "development" }}
+    APP_COLOR: darkblue
+  {{- else }}
+    APP_COLOR: green
+  {{- end }}
